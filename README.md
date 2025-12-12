@@ -141,11 +141,3 @@ Proyek ini dibuat untuk keperluan akademik dan pembelajaran.
 Penggunaan ulang dan modifikasi diperbolehkan selama tetap mencantumkan atribusi kepada pengembang asli.
 
 ---
-
-Jika kamu ingin:
-✨ Dibuatkan versi PDF README
-✨ Dibuatkan README versi Bahasa Inggris
-✨ Ditambah screenshot CLI tampilan contoh
-✨ Ditambah diagram arsitektur untuk README
-
-Tinggal bilang aja!
