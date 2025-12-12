@@ -1,10 +1,4 @@
-Siap — berikut **README.md revisi** tanpa mencantumkan credential default.
-(Username & password tetap ada di kode Java, tapi **tidak ditulis di README**.)
-
----
-
 # 📚 Digital Library Catalog – Java CLI Application
-
 Aplikasi **Katalog Buku Digital** ini dikembangkan menggunakan **Java (Console-Based / CLI)** untuk mendukung proses pencarian dan pengelolaan koleksi buku pada Program Studi Sistem Informasi. Sistem menyediakan fitur untuk tiga jenis peran: **Admin**, **User (Student/Lecturer)**, dan **Kaprodi**, dengan antarmuka berbasis teks yang sederhana dan mudah digunakan.
 
 Aplikasi dirancang menggunakan pendekatan **Object-Oriented Programming (OOP)** serta arsitektur **3-layer** sederhana:
