@@ -63,5 +63,3 @@ AI membantu menjelaskan perbaikan seperti:
 ### Penegasan
 Seluruh implementasi final, logika fitur, perbaikan keamanan dasar, dan penyesuaian kode dilakukan secara mandiri oleh mahasiswa.
 Tidak ada bagian sistem yang dilakukan sebagai copy-paste penuh dari AI tanpa pemahaman.
-
-```
