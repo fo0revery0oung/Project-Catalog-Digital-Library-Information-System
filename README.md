@@ -95,7 +95,7 @@ Untuk menjalankan aplikasi Katalog Buku Digital, ikuti langkah berikut:
 1. Download atau clone repository project
 2. **Ekstrak seluruh isi file ZIP ke dalam satu folder yang sama**
 
-   > ⚠️ Seluruh file HTML dan folder `assets` **harus berada dalam satu folder utama**, tidak boleh terpisah, agar aplikasi dapat berjalan dengan baik
+   > ⚠️ Seluruh file HTML dan folder `Digital-Library` **harus berada dalam satu folder utama**, tidak boleh terpisah, agar aplikasi dapat berjalan dengan baik
 3. Buka folder hasil ekstraksi / clone repository
 4. Pastikan struktur folder sudah benar (semua file berada dalam satu folder)
 5. Jalankan aplikasi dengan membuka file `main.html` menggunakan browser
