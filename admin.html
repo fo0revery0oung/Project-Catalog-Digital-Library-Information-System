@@ -1,0 +1,300 @@
+
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard – Katalog Buku Digital</title>
+
+<style>
+:root{
+  --orange:#f97316;
+  --orange-dark:#ea580c;
+  --orange-soft:#ffedd5;
+  --bg:#fff7ed;
+  --card:#ffffff;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Segoe UI',Arial;
+  background:linear-gradient(180deg,#fff7ed,#ffedd5);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(90deg,var(--orange),var(--orange-dark));
+  color:white;
+  padding:22px 30px;
+  box-shadow:0 4px 15px rgba(0,0,0,.2);
+}
+
+header h2{
+  color:#ffffff;
+}
+
+
+/* LAYOUT */
+main{
+  max-width:1400px;
+  margin:auto;
+  padding:30px;
+}
+
+/* CARD */
+.card{
+  background:var(--card);
+  border-radius:18px;
+  padding:24px;
+  margin-bottom:24px;
+  box-shadow:0 12px 30px rgba(0,0,0,.1);
+}
+
+h2,h3{color:var(--orange-dark);margin-top:0}
+
+/* INPUT */
+input,textarea{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:12px;
+  border:1px solid #fbcfa8;
+  background:#fffaf5;
+}
+input:focus,textarea:focus{
+  outline:none;
+  border-color:var(--orange);
+}
+
+/* BUTTON */
+button{
+  background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+  color:white;
+  border:none;
+  padding:12px 22px;
+  border-radius:14px;
+  font-weight:600;
+  cursor:pointer;
+}
+button:hover{opacity:.9;transform:translateY(-1px)}
+
+.hidden{display:none}
+
+/* DASHBOARD GRID */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+.stat-box{
+  background:linear-gradient(135deg,#fff,#ffedd5);
+  padding:20px;
+  border-radius:16px;
+  text-align:center;
+}
+.stat-box h1{margin:10px 0;color:var(--orange-dark)}
+
+/* ACTIONS */
+.actions button{margin:8px}
+
+/* FORM GRID */
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+/* TABLE */
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0 12px;
+}
+th{
+  background:var(--orange-soft);
+  padding:14px;
+  color:#7c2d12;
+}
+td{
+  background:white;
+  padding:14px;
+}
+tr:hover td{background:#fff3e0;cursor:pointer}
+
+.cover{
+  width:60px;
+  height:80px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#fed7aa,#fdba74);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:bold;
+  color:#7c2d12;
+}
+
+/* PAGINATION */
+.pagination{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:15px;
+}
+.pagination button{padding:8px 14px}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>Admin Dashboard – Katalog Buku Digital</h2>
+</header>
+
+<main>
+
+<!-- LOGIN -->
+<div id="login" class="card">
+  <h3>Login Admin</h3>
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-box">
+      <p>Total Books</p>
+      <h1 id="totalBooks">0</h1>
+    </div>
+    <div class="stat-box">
+      <p>New Books</p>
+      <h1 id="newBooksCount">3</h1>
+    </div>
+    <div class="stat-box">
+      <p>Categories</p>
+      <h1>8</h1>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="card actions">
+    <h3>Quick Actions</h3>
+    <button onclick="show('add')">Add Book</button>
+    <button onclick="show('manage')">Manage Books</button>
+    <button onclick="show('new')">Newly Added</button>
+    <button onclick="show('reports')">View Reports</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <!-- ADD / EDIT -->
+  <div id="add" class="card hidden">
+    <h3>Add / Edit Book</h3>
+    <div class="form-grid">
+      <div>
+        <input id="title" placeholder="Title">
+        <input id="author" placeholder="Author">
+        <input id="year" placeholder="Year">
+        <input id="category" placeholder="Category">
+      </div>
+      <div>
+        <textarea id="desc" placeholder="Description"></textarea>
+        <input id="cover" placeholder="Cover ([image])">
+      </div>
+    </div>
+    <button onclick="save()">Save Changes</button>
+    <button onclick="remove()">Delete Book</button>
+  </div>
+
+  <!-- MANAGE -->
+  <div id="manage" class="card hidden">
+    <h3>All Books Management</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Cover</th><th>Title</th><th>Author</th><th>Year</th><th>Category</th>
+        </tr>
+      </thead>
+      <tbody id="table"></tbody>
+    </table>
+    <div class="pagination">
+      <p>Showing 1–8 of 1000 books</p>
+      <div>
+        <button>1</button><button>2</button><button>3</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW -->
+  <div id="new" class="card hidden">
+    <h3>Newly Added Books</h3>
+    <ul id="newList"></ul>
+  </div>
+
+  <!-- REPORT -->
+  <div id="reports" class="card hidden">
+    <h3>Reports</h3>
+    <p>No reports from Kaprodi.</p>
+  </div>
+
+</div>
+</main>
+
+<script>
+let books=[
+{t:'Algoritma',a:'Sutanto',y:2023,c:'Programming',cv:'[image]'},
+{t:'Basis Data',a:'Kurnia',y:2022,c:'Database',cv:'[image]'},
+{t:'AI Dasar',a:'Putri',y:2024,c:'AI',cv:'[image]'},
+{t:'Web Dev',a:'Andi',y:2021,c:'Web',cv:'[image]'},
+{t:'OOP Java',a:'Rina',y:2023,c:'Programming',cv:'[image]'}
+];
+let selected=-1;
+
+function login(){
+  if(username.value==='admin' && password.value==='admin123'){
+    loginDiv().classList.add('hidden');
+    dashboard().classList.remove('hidden');
+    render();
+  } else alert('Login gagal');
+}
+function logout(){location.reload()}
+function show(id){
+  ['add','manage','new','reports'].forEach(x=>document.getElementById(x).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+function render(){
+  table.innerHTML='';
+  books.forEach((b,i)=>{
+    table.innerHTML+=`<tr onclick="edit(${i})">
+      <td><div class="cover">${b.cv}</div></td>
+      <td>${b.t}</td><td>${b.a}</td><td>${b.y}</td><td>${b.c}</td>
+    </tr>`;
+  });
+  totalBooks.innerText=books.length;
+  newList.innerHTML=books.slice(-3).map(b=>`<li>${b.t} (${b.y})</li>`).join('');
+}
+function edit(i){
+  selected=i; show('add');
+  title.value=books[i].t;
+  author.value=books[i].a;
+  year.value=books[i].y;
+  category.value=books[i].c;
+  cover.value=books[i].cv;
+}
+function save(){
+  if(selected>-1) books[selected]={t:title.value,a:author.value,y:year.value,c:category.value,cv:cover.value};
+  else books.push({t:title.value,a:author.value,y:year.value,c:category.value,cv:cover.value});
+  selected=-1; render(); alert('Saved');
+}
+function remove(){
+  if(selected>-1){books.splice(selected,1);selected=-1;render();alert('Deleted')}
+}
+function loginDiv(){return document.getElementById('login')}
+function dashboard(){return document.getElementById('dashboard')}
+</script>
+
+</body>
+</html>
