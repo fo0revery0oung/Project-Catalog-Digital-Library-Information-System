@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaprodi – Katalog Buku Digital</title>
+
+<style>
+:root{
+  --orange:#f97316;
+  --orange-dark:#ea580c;
+  --soft:#ffedd5;
+  --bg:#fff7ed;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Segoe UI',Arial;
+  background:linear-gradient(180deg,#fff7ed,#ffedd5);
+}
+
+/* ===== LOGIN ===== */
+#login{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.login-card{
+  background:#fff;
+  padding:35px;
+  border-radius:22px;
+  width:380px;
+  box-shadow:0 25px 45px rgba(0,0,0,.15);
+}
+.login-card h2{
+  text-align:center;
+  color:var(--orange-dark);
+}
+.login-card input{
+  width:100%;
+  padding:12px;
+  margin:12px 0;
+  border-radius:12px;
+  border:1px solid #fbcfa8;
+}
+.login-card button{
+  width:100%;
+  padding:12px;
+  background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+  border:none;
+  color:#fff;
+  border-radius:12px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* ===== DASHBOARD ===== */
+#dashboard{display:none}
+header{
+  background:linear-gradient(90deg,var(--orange),var(--orange-dark));
+  color:#fff;
+  padding:22px 30px;
+}
+header button{
+  float:right;
+  background:#fff;
+  color:var(--orange-dark);
+  border:none;
+  padding:8px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+}
+main{
+  max-width:1400px;
+  margin:auto;
+  padding:30px;
+}
+.card{
+  background:#fff;
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 12px 25px rgba(0,0,0,.12);
+  margin-bottom:25px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+.stat{
+  background:var(--soft);
+  border-radius:16px;
+  padding:20px;
+  text-align:center;
+}
+.bar{
+  height:16px;
+  border-radius:10px;
+  background:linear-gradient(90deg,#fdba74,#f97316);
+  margin-bottom:8px;
+}
+.books{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:18px;
+}
+.book{
+  background:#fff;
+  border-radius:16px;
+  padding:14px;
+  box-shadow:0 6px 15px rgba(0,0,0,.1);
+}
+.cover{
+  height:120px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#fed7aa,#fdba74);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#7c2d12;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+.tag{
+  background:var(--soft);
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+}
+input{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid #fbcfa8;
+  margin-bottom:15px;
+}
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="login-card">
+    <h2>Login Kaprodi</h2>
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+
+<header>
+  <h2>Kaprodi Dashboard – Monitoring Katalog Buku</h2>
+  <button onclick="logout()">Logout</button>
+</header>
+
+<main>
+
+<!-- METRICS -->
+<div class="grid">
+  <div class="stat">
+    <h3 id="totalBooks">0</h3>
+    <p>Total Books</p>
+  </div>
+  <div class="stat">
+    <h3 id="totalCategories">0</h3>
+    <p>Total Categories</p>
+  </div>
+  <div class="stat">
+    <h3 id="newBooks">0</h3>
+    <p>New Books (30 days)</p>
+  </div>
+</div>
+
+<!-- CHART -->
+<div class="card">
+  <h3>Books per Category</h3>
+  <div id="chart"></div>
+</div>
+
+<!-- REPORT -->
+<div class="card">
+  <button onclick="toggleReport()">View Collection Report</button>
+  <button onclick="alert('Report exported (dummy)')">Export Report</button>
+</div>
+
+<div class="card hidden" id="report">
+  <h3>Category Statistics</h3>
+  <table width="100%" cellpadding="8">
+    <tr>
+      <th align="left">Category</th>
+      <th>Count</th>
+      <th>Percentage</th>
+      <th>Latest Addition</th>
+    </tr>
+    <tbody id="reportTable"></tbody>
+  </table>
+  <p><b>Most Popular Category:</b> Programming</p>
+</div>
+
+<!-- SEARCH & ALL BOOKS -->
+<div class="card">
+  <h3>Search & View All Books</h3>
+  <input id="searchInput" placeholder="Search book..." onkeyup="renderBooks()">
+
+  <div class="books" id="books"></div>
+  <p style="color:#777;margin-top:10px">Showing 1–10 of 1248 books</p>
+</div>
+
+</main>
+</div>
+
+<script>
+/* LOGIN */
+const loginDiv=document.getElementById('login');
+const dashboard=document.getElementById('dashboard');
+
+function login(){
+  if(user.value==='kaprodi' && pass.value==='kaprodi123'){
+    loginDiv.style.display='none';
+    dashboard.style.display='block';
+    render();
+  }else{
+    alert('Username atau password salah!');
+  }
+}
+function logout(){
+  dashboard.style.display='none';
+  loginDiv.style.display='flex';
+  user.value=pass.value='';
+}
+
+/* DATA */
+const bookData=[
+{t:'Algoritma',c:'Programming',y:2023},
+{t:'Java OOP',c:'Programming',y:2022},
+{t:'Python',c:'Programming',y:2021},
+{t:'Database',c:'Database',y:2022},
+{t:'SQL Lanjutan',c:'Database',y:2023},
+{t:'AI Dasar',c:'AI',y:2024},
+{t:'Machine Learning',c:'AI',y:2025},
+{t:'Web Development',c:'Web',y:2021},
+{t:'Frontend',c:'Web',y:2023},
+{t:'Backend',c:'Web',y:2024},
+{t:'Cloud',c:'Web',y:2024},
+{t:'Jaringan',c:'Network',y:2020},
+{t:'Admin Jaringan',c:'Network',y:2022},
+{t:'Cyber Security',c:'Security',y:2024},
+{t:'Kriptografi',c:'Security',y:2021},
+{t:'Data Mining',c:'AI',y:2024},
+{t:'Deep Learning',c:'AI',y:2023},
+{t:'UI UX',c:'Web',y:2023},
+{t:'DevOps',c:'Web',y:2024},
+{t:'Big Data',c:'AI',y:2025},
+{t:'NoSQL',c:'Database',y:2024},
+{t:'IoT',c:'Network',y:2023},
+{t:'Ethical Hacking',c:'Security',y:2024},
+{t:'REST API',c:'Web',y:2023},
+{t:'Sistem Informasi',c:'Programming',y:2022}
+];
+
+function render(){
+  totalBooks.innerText=bookData.length;
+  totalCategories.innerText=[...new Set(bookData.map(b=>b.c))].length;
+  newBooks.innerText=bookData.filter(b=>b.y>=2024).length;
+
+  const catCount={};
+  bookData.forEach(b=>catCount[b.c]=(catCount[b.c]||0)+1);
+
+  chart.innerHTML='';
+  reportTable.innerHTML='';
+  Object.keys(catCount).forEach(c=>{
+    chart.innerHTML+=`
+      ${c} (${catCount[c]})
+      <div class="bar" style="width:${catCount[c]*10}%"></div>`;
+    reportTable.innerHTML+=`
+      <tr>
+        <td>${c}</td>
+        <td>${catCount[c]}</td>
+        <td>${Math.round(catCount[c]/bookData.length*100)}%</td>
+        <td>2024</td>
+      </tr>`;
+  });
+
+  renderBooks();
+}
+
+function renderBooks(){
+  const q=searchInput.value.toLowerCase();
+  books.innerHTML='';
+  bookData
+    .filter(b=>b.t.toLowerCase().includes(q))
+    .slice(0,10)
+    .forEach(b=>{
+      books.innerHTML+=`
+        <div class="book">
+          <div class="cover">[image]</div>
+          <b>${b.t}</b><br>
+          <span class="tag">${b.c}</span>
+        </div>`;
+    });
+}
+
+function toggleReport(){
+  report.classList.toggle('hidden');
+}
+</script>
+
+</body>
+</html>
+
