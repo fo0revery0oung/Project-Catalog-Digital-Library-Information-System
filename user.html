@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User – Katalog Buku Digital</title>
+
+<style>
+:root{
+  --orange:#f97316;
+  --orange-dark:#ea580c;
+  --orange-soft:#ffedd5;
+  --bg:#fff7ed;
+  --card:#ffffff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Segoe UI',Arial;
+  background:linear-gradient(180deg,#fff7ed,#ffedd5);
+}
+header{
+  background:linear-gradient(90deg,var(--orange),var(--orange-dark));
+  color:white;
+  padding:22px 30px;
+}
+main{
+  max-width:1400px;
+  margin:auto;
+  padding:30px;
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:25px;
+}
+.card{
+  background:var(--card);
+  border-radius:18px;
+  padding:22px;
+  box-shadow:0 10px 25px rgba(0,0,0,.1);
+  margin-bottom:22px;
+}
+h3{color:var(--orange-dark);margin-top:0}
+input,select{
+  width:100%;
+  padding:12px;
+  margin-top:8px;
+  border-radius:12px;
+  border:1px solid #fbcfa8;
+}
+.filter-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.filter-item{
+  background:#fff7ed;
+  border:1px solid #fbcfa8;
+  padding:8px 10px;
+  border-radius:10px;
+  font-size:14px;
+}
+.books{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:22px;
+}
+.book{
+  background:#fff;
+  border-radius:16px;
+  padding:14px;
+  box-shadow:0 6px 18px rgba(0,0,0,.1);
+  cursor:pointer;
+}
+.cover{
+  height:140px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#fed7aa,#fdba74);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  color:#7c2d12;
+  margin-bottom:10px;
+}
+.tag{
+  background:var(--orange-soft);
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+}
+button{
+  background:linear-gradient(135deg,var(--orange),var(--orange-dark));
+  color:white;
+  border:none;
+  padding:10px 18px;
+  border-radius:12px;
+  cursor:pointer;
+}
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>Katalog Buku Digital – Mahasiswa & Dosen</h2>
+</header>
+
+<main>
+
+<!-- LEFT -->
+<div>
+  <div class="card">
+    <h3>Search Book</h3>
+    <select id="searchBy">
+      <option value="title">Title</option>
+      <option value="author">Author</option>
+      <option value="category">Category</option>
+    </select>
+    <input id="searchInput" placeholder="Search..." />
+  </div>
+
+  <div class="card">
+    <h3>Filter</h3>
+    <div class="filter-grid">
+      <label class="filter-item"><input type="checkbox" value="Programming"> Programming</label>
+      <label class="filter-item"><input type="checkbox" value="Database"> Database</label>
+      <label class="filter-item"><input type="checkbox" value="AI"> AI</label>
+      <label class="filter-item"><input type="checkbox" value="Web"> Web</label>
+      <label class="filter-item"><input type="checkbox" value="Network"> Network</label>
+      <label class="filter-item"><input type="checkbox" value="Security"> Security</label>
+    </div>
+    <select id="yearFilter" style="margin-top:12px">
+      <option value="">All Years</option>
+      <option value="2020">2020–2021</option>
+      <option value="2022">2022–2023</option>
+      <option value="2024">2024–2025</option>
+    </select>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div>
+
+  <div class="card">
+    <h3>Newest Books</h3>
+    <div class="books" id="newestBooks"></div>
+  </div>
+
+  <div class="card" id="bookList">
+    <h3>All Books</h3>
+    <div class="books" id="books"></div>
+  </div>
+
+  <div class="card hidden" id="detail">
+    <h3 id="dTitle"></h3>
+    <div class="cover" style="height:180px">[image]</div>
+    <p><b>Author:</b> <span id="dAuthor"></span></p>
+    <p><b>Year:</b> <span id="dYear"></span></p>
+    <p><b>Category:</b> <span id="dCategory" class="tag"></span></p>
+    <p id="dDesc"></p>
+    <button onclick="back()">← Back</button>
+  </div>
+
+</div>
+</main>
+
+<script>
+/* ELEMENTS */
+const searchInput=document.getElementById('searchInput');
+const searchBy=document.getElementById('searchBy');
+const yearFilter=document.getElementById('yearFilter');
+const newestBooks=document.getElementById('newestBooks');
+const booksEl=document.getElementById('books');
+const bookList=document.getElementById('bookList');
+const detailDiv=document.getElementById('detail');
+const dTitle=document.getElementById('dTitle');
+const dAuthor=document.getElementById('dAuthor');
+const dYear=document.getElementById('dYear');
+const dCategory=document.getElementById('dCategory');
+const dDesc=document.getElementById('dDesc');
+
+/* DATA */
+const bookData=[
+{title:'Algoritma',author:'Sutanto',year:2023,category:'Programming',desc:'Algoritma dasar'},
+{title:'Java OOP',author:'Rina',year:2022,category:'Programming',desc:'OOP Java'},
+{title:'Python Dasar',author:'Budi',year:2021,category:'Programming',desc:'Python'},
+{title:'Basis Data',author:'Kurnia',year:2022,category:'Database',desc:'Database'},
+{title:'SQL Lanjut',author:'Nina',year:2023,category:'Database',desc:'SQL'},
+{title:'AI Dasar',author:'Putri',year:2024,category:'AI',desc:'AI'},
+{title:'Machine Learning',author:'Rizki',year:2025,category:'AI',desc:'ML'},
+{title:'Web Dev',author:'Andi',year:2021,category:'Web',desc:'Web'},
+{title:'Frontend',author:'Dewi',year:2023,category:'Web',desc:'UI'},
+{title:'Cloud',author:'Yusuf',year:2024,category:'Web',desc:'Cloud'},
+{title:'Jaringan',author:'Dewi',year:2020,category:'Network',desc:'Network'},
+{title:'Admin Jaringan',author:'Hendra',year:2022,category:'Network',desc:'Network Admin'},
+{title:'Security SI',author:'Budi',year:2022,category:'Security',desc:'Security'},
+{title:'Cyber Security',author:'Kevin',year:2024,category:'Security',desc:'Cyber'},
+{title:'Kriptografi',author:'Rani',year:2021,category:'Security',desc:'Crypto'}
+];
+
+/* FUNCTIONS */
+function renderBooks(){
+  const q=searchInput.value.toLowerCase();
+  const by=searchBy.value;
+  const cats=[...document.querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value);
+  const y=yearFilter.value;
+
+  booksEl.innerHTML='';
+  bookData.forEach((b,i)=>{
+    const match=b[by].toLowerCase().includes(q);
+    const cat=cats.length?cats.includes(b.category):true;
+    const yr=!y||(y==2020&&b.year<=2021)||(y==2022&&b.year<=2023&&b.year>=2022)||(y==2024&&b.year>=2024);
+    if(match&&cat&&yr){
+      booksEl.innerHTML+=`
+        <div class="book" onclick="showDetail(${i})">
+          <div class="cover">[image]</div>
+          <b>${b.title}</b><br>
+          <small>${b.author}</small><br>
+          <span class="tag">${b.category}</span>
+        </div>`;
+    }
+  });
+}
+
+function showDetail(i){
+  bookList.classList.add('hidden');
+  detailDiv.classList.remove('hidden');
+  const b=bookData[i];
+  dTitle.innerText=b.title;
+  dAuthor.innerText=b.author;
+  dYear.innerText=b.year;
+  dCategory.innerText=b.category;
+  dDesc.innerText=b.desc;
+}
+
+function back(){
+  detailDiv.classList.add('hidden');
+  bookList.classList.remove('hidden');
+}
+
+function init(){
+  newestBooks.innerHTML=bookData.slice(-4).map(b=>`
+    <div class="book">
+      <div class="cover">[image]</div>
+      <b>${b.title}</b>
+    </div>`).join('');
+  renderBooks();
+}
+
+/* EVENTS */
+searchInput.onkeyup=renderBooks;
+searchBy.onchange=renderBooks;
+yearFilter.onchange=renderBooks;
+document.querySelectorAll('input[type=checkbox]').forEach(c=>c.onchange=renderBooks);
+
+init();
+</script>
+
+</body>
+</html>
+
