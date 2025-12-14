@@ -14,7 +14,7 @@ Aplikasi ini dikembangkan sebagai media pembelajaran implementasi konsep **front
 
 ## 🎯 Tujuan Aplikasi
 
-Aplikasi ini hadir untuk:
+Aplikasi ini bertujuan untuk:
 
 * Mempermudah **pengelolaan data buku digital**
 * Menyediakan **akses informasi buku** bagi mahasiswa dan dosen
@@ -90,43 +90,59 @@ Aplikasi ini tidak menggunakan framework atau library eksternal sehingga dapat d
 
 ## 🚀 Cara Menjalankan Aplikasi
 
-Untuk menjalankan aplikasi Katalog Buku Digital, ikuti langkah berikut:
+Aplikasi **Katalog Buku Digital** dapat dijalankan dengan dua cara berikut:
+
+### 🔗 1. Menjalankan Langsung Melalui Link (Disarankan)
+
+Aplikasi dapat langsung diakses tanpa perlu download melalui link berikut:
+
+👉 **[https://clips.id/PSI_DigitalLibrary](https://clips.id/PSI_DigitalLibrary)**
+
+Cukup buka link tersebut menggunakan browser:
+
+* Google Chrome (disarankan)
+* Mozilla Firefox
+* Microsoft Edge
+
+---
+
+### 💻 2. Menjalankan Secara Lokal (Offline)
 
 1. Download atau clone repository project
+
 2. **Ekstrak seluruh isi file ZIP ke dalam satu folder yang sama**
 
    > ⚠️ Seluruh file HTML dan folder `Digital-Library` **harus berada dalam satu folder utama**, tidak boleh terpisah, agar aplikasi dapat berjalan dengan baik
-3. Buka folder hasil ekstraksi / clone repository
-4. Pastikan struktur folder sudah benar (semua file berada dalam satu folder)
-5. Jalankan aplikasi dengan membuka file `main.html` menggunakan browser
 
-   * Google Chrome (disarankan)
-   * Mozilla Firefox
-   * Microsoft Edge
+3. Pastikan struktur folder sudah benar (semua file berada dalam satu folder)
 
-### Login Admin
+4. Buka file `main.html` menggunakan browser
+
+---
+
+### 🔐 Login Admin
+
+Gunakan akun berikut untuk masuk sebagai admin:
 
 * **Username:** admin
 * **Password:** admin123
 
 ---
 
-## 🔍 Uji Coba Aplikasi (Clone Repository)
+## 🔍 Uji Coba Aplikasi
 
-Untuk memastikan aplikasi dapat dijalankan di environment lain, telah dilakukan uji coba ulang dengan langkah berikut:
+Untuk memastikan aplikasi berjalan dengan baik, telah dilakukan pengujian dengan:
 
-1. Melakukan clone repository pada perangkat yang berbeda
-2. **Mengekstrak dan memastikan seluruh file berada dalam satu folder utama yang sama**
-3. Membuka folder project hasil clone tanpa melakukan konfigurasi tambahan
-4. Menjalankan file `main.html` langsung melalui browser
-5. Menguji seluruh fitur utama:
+* Menjalankan aplikasi melalui link online
+* Menjalankan aplikasi secara lokal di perangkat yang berbeda
+* Menguji fitur utama seperti:
 
-   * Login admin
-   * Dashboard admin
-   * Tambah, edit, dan hapus data buku
-   * Tampilan tabel dan statistik
+  * Login admin
+  * Dashboard admin
+  * Tambah, edit, dan hapus data buku
+  * Tampilan tabel dan statistik
 
-Hasil uji coba menunjukkan bahwa aplikasi dapat berjalan dengan baik pada environment yang berbeda selama seluruh file berada dalam satu folder yang sama.
+Hasil pengujian menunjukkan aplikasi dapat berjalan dengan baik selama struktur file tidak berubah.
 
 ---
 
@@ -138,7 +154,7 @@ Aplikasi ini dibuat untuk:
 * Project UTS / UAS
 * Media pembelajaran
 
-Masih bersifat **frontend-only** (tanpa database dan backend).
+Aplikasi ini masih bersifat **frontend-only** (tanpa database dan backend).
 
 ---
 
